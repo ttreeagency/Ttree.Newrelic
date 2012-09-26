@@ -1,0 +1,6 @@
+NewRelic:
+  transactionName:
+    log: true
+    send: true
+  throwOnMissingExtension: false
+  logOnMissingExtension: true

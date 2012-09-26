@@ -1,5 +1,5 @@
 <?php
-namespace NewRelic;
+namespace NewRelic\Aspect;
 
 /*                                                                        *
  * This script belongs to the FLOW3 framework.                            *
@@ -22,6 +22,7 @@ use TYPO3\FLOW3\Annotations as FLOW3;
 class NewRelicLoggerAspect {
 
   /**
+   * @FLOW3\Inject
     * @var \NewRelic\Connector
     *
   */
@@ -32,8 +33,8 @@ class NewRelicLoggerAspect {
    *
    * @param \NewRelic\Connector $connector
    */
-  public function __construct(\NewRelic\Connector $connector) {
-    $this->connector = $connector;
+  public function __construct() {
+
   }
 
 
@@ -47,5 +48,6 @@ class NewRelicLoggerAspect {
   public function logRequestInNewRelic(\TYPO3\FLOW3\AOP\JoinPointInterface $joinPoint) {
     $request = $joinPoint->getMethodArgument('request');
     $this->connector->logRequest($request);
+    return $joinPoint->getAdviceChain()->proceed($joinPoint);
   }
 }
