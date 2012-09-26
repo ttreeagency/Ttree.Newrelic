@@ -56,17 +56,50 @@ class Connector {
         if($request instanceof \TYPO3\FLOW3\MVC\CLI\Request ) {
             return $this->logCliRequest($request);
         }
+        $this->systemLogger->log('Request of unknown type');
     }
 
     private function logWebRequest(\TYPO3\FLOW3\MVC\Web\Request $request) {
-        $transactionName = $request->getRequestUri()->getPath();
+        $values = array();
+        $values['{{FullControllerName}}'] = $request->getControllerObjectName();
+        $values['{{ControllerName}}'] = $request->getControllerName();
+        $values['{{Namespace}}'] = str_replace($values['{{ControllerName}}'], '', $request->getControllerObjectName());
+        $values['{{ActionName}}'] = $request->getControllerActionName();
+        $values['{{PackageKey}}'] = $request->getControllerPackageKey();
+        $values['{{UrlPath}}'] = $request->getRequestUri()->getPath();
+        $values['{{Format}}'] = $request->getFormat();
+
+        $transactionName  =$this->formatTransactionName($this->getTransactionNameTemplate('Web'), $values);
         $this->handleTransactionName($transactionName);
     }
 
     private function logCliRequest(\TYPO3\FLOW3\MVC\CLI\Request $request) {
-        $transactionName = $request->getControllerObjectName().':'.$request->getControllerCommandName();
+        $values = array();
+        $values['{{FullControllerName}}'] = $request->getControllerObjectName();
+        $values['{{CommandName}}'] = $request->getControllerCommandName();
+        $values['{{ControllerName}}'] = \substr($request->getControllerObjectName(), \strrpos($request->getControllerObjectName(), '\\')+1 );
+        $values['{{Namespace}}'] = str_replace($values['{{ControllerName}}'], '', $request->getControllerObjectName());
+        $namespaceArray = explode('\\', $values['{{Namespace}}']);
+        $values['{{LastNameSpaceElementBeforeCommand}}'] = $namespaceArray[count($namespaceArray)-3];
+
+
+        $transactionName  = $this->formatTransactionName($this->getTransactionNameTemplate('Cli'), $values);
+
         $this->handleTransactionName($transactionName);
     }
+
+
+    private function getTransactionNameTemplate($for='Web') {
+        return $this->settings['transactionName']['template'][$for];
+    }
+
+    private function formatTransactionName($transactionNameTemplate, $values) {
+        foreach($values as $key=>$value) {
+            $transactionNameTemplate = str_replace($key, $value, $transactionNameTemplate);
+        }
+        return $transactionNameTemplate;
+    }
+
 
     private function handleTransactionName($transactionName) {
         if($this->settings['transactionName']['log']) {

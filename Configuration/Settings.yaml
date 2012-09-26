@@ -2,5 +2,8 @@ NewRelic:
   transactionName:
     log: true
     send: true
+    template:
+      Web: "{{UrlPath}}"
+      Cli: "{{LastNameSpaceElementBeforeCommand}}:{{ControllerName}}:{{CommandName}}"
   throwOnMissingExtension: false
   logOnMissingExtension: true

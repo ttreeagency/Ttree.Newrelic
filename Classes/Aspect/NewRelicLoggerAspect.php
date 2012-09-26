@@ -19,35 +19,41 @@ use TYPO3\FLOW3\Annotations as FLOW3;
  * @FLOW3\Scope("singleton")
  * @FLOW3\Aspect
  */
-class NewRelicLoggerAspect {
+class NewRelicLoggerAspect
+{
 
-  /**
-   * @FLOW3\Inject
-    * @var \NewRelic\Connector
-    *
-  */
-  protected $connector;
+    /**
+     * @FLOW3\Inject
+     * @var \NewRelic\Connector
+     *
+     */
+    protected $connector;
 
-  /**
-   * Constructor
-   *
-   * @param \NewRelic\Connector $connector
-   */
-  public function __construct() {
+    /**
+     * @var  \TYPO3\FLOW3\Log\SystemLoggerInterface $systemLogger
+     */
+    protected $systemLogger;
 
-  }
+    /**
+     * @param \TYPO3\FLOW3\Log\SystemLoggerInterface $systemLogger
+     *
+     * @return void
+     */
+    public function injectSystemLogger(\TYPO3\FLOW3\Log\SystemLoggerInterface $systemLogger)
+    {
+        $this->systemLogger = $systemLogger;
+    }
 
-
-  /**
-   * Logs the current request in newrelic
-   *
-   * @FLOW3\Around("method(TYPO3\FLOW3\MVC\Dispatcher->dispatch())")
-   * @param \TYPO3\FLOW3\AOP\JoinPointInterface $joinPoint The current joinpoint
-   * @return mixed Result of the advice chain
-   */
-  public function logRequestInNewRelic(\TYPO3\FLOW3\AOP\JoinPointInterface $joinPoint) {
-    $request = $joinPoint->getMethodArgument('request');
-    $this->connector->logRequest($request);
-    return $joinPoint->getAdviceChain()->proceed($joinPoint);
-  }
+    /**
+     * Logs the current request in newrelic
+     *
+     * @FLOW3\Around("method(ArnsboMedia.*Controller->processRequest())")
+     * @param \TYPO3\FLOW3\AOP\JoinPointInterface $joinPoint The current joinpoint
+     * @return mixed Result of the advice chain
+     */
+    public function logRequestInNewRelic(\TYPO3\FLOW3\AOP\JoinPointInterface $joinPoint) {
+        $request = $joinPoint->getMethodArgument('request');
+        $this->connector->logRequest($request);
+        return $joinPoint->getAdviceChain()->proceed($joinPoint);
+    }
 }
