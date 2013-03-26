@@ -2,7 +2,7 @@
 namespace NewRelic\Aspect;
 
 /*                                                                        *
- * This script belongs to the FLOW3 framework.                            *
+ * This script belongs to the Flow framework.                            *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -11,35 +11,35 @@ namespace NewRelic\Aspect;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use TYPO3\FLOW3\Annotations as FLOW3;
+use TYPO3\Flow\Annotations as Flow;
 
 /**
  * An aspect which centralizes the logging of security relevant actions.
  *
- * @FLOW3\Scope("singleton")
- * @FLOW3\Aspect
+ * @Flow\Scope("singleton")
+ * @Flow\Aspect
  */
 class NewRelicLoggerAspect
 {
 
     /**
-     * @FLOW3\Inject
+     * @Flow\Inject
      * @var \NewRelic\Connector
      *
      */
     protected $connector;
 
     /**
-     * @var  \TYPO3\FLOW3\Log\SystemLoggerInterface $systemLogger
+     * @var  \TYPO3\Flow\Log\SystemLoggerInterface $systemLogger
      */
     protected $systemLogger;
 
     /**
-     * @param \TYPO3\FLOW3\Log\SystemLoggerInterface $systemLogger
+     * @param \TYPO3\Flow\Log\SystemLoggerInterface $systemLogger
      *
      * @return void
      */
-    public function injectSystemLogger(\TYPO3\FLOW3\Log\SystemLoggerInterface $systemLogger)
+    public function injectSystemLogger(\TYPO3\Flow\Log\SystemLoggerInterface $systemLogger)
     {
         $this->systemLogger = $systemLogger;
     }
@@ -47,11 +47,11 @@ class NewRelicLoggerAspect
     /**
      * Logs the current request in newrelic
      *
-     * @FLOW3\Around("method(ArnsboMedia.*Controller->processRequest())")
-     * @param \TYPO3\FLOW3\AOP\JoinPointInterface $joinPoint The current joinpoint
+     * @Flow\Around("method(ArnsboMedia.*Controller->processRequest())")
+     * @param \TYPO3\Flow\AOP\JoinPointInterface $joinPoint The current joinpoint
      * @return mixed Result of the advice chain
      */
-    public function logRequestInNewRelic(\TYPO3\FLOW3\AOP\JoinPointInterface $joinPoint) {
+    public function logRequestInNewRelic(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
         $request = $joinPoint->getMethodArgument('request');
         $this->connector->logRequest($request);
         return $joinPoint->getAdviceChain()->proceed($joinPoint);
