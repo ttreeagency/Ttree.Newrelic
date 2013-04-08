@@ -22,7 +22,7 @@ class NewRelicLoggerAspect {
 
 	/**
 	 * @Flow\Inject
-	 * @var \NewRelic\Connector
+	 * @var \Ttree\NewRelic\Connector
 	 *
 	 */
 	protected $connector;
