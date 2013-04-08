@@ -1,5 +1,5 @@
 <?php
-namespace NewRelic\ViewHelpers;
+namespace Ttree\NewRelic\ViewHelpers;
 
 /*                                                                        *
  * This script belongs to the Flow framework.                             *
@@ -34,8 +34,8 @@ class TimingHeaderViewhelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHe
 	 * @return string
 	 */
 	public function render() {
-		if($this->settings['transactionName']['send'] && extension_loaded('newrelic') ) {
-			return newrelic_get_browser_timing_header();
+		if($this->settings['transactionName']['userMonitoring'] && extension_loaded('newrelic') ) {
+			return newrelic_get_browser_timing_footer();
 		}
 	}
 }

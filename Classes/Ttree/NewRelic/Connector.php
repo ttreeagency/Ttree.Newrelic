@@ -1,5 +1,5 @@
 <?php
-namespace NewRelic;
+namespace Ttree\NewRelic;
 
 
 use TYPO3\Flow\Annotations as Flow;

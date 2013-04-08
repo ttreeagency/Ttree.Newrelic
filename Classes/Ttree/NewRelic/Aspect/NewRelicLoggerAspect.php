@@ -1,5 +1,5 @@
 <?php
-namespace NewRelic\Aspect;
+namespace Ttree\NewRelic\Aspect;
 
 /*                                                                        *
  * This script belongs to the Flow framework.                             *
