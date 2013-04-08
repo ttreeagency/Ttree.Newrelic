@@ -15,7 +15,7 @@ use TYPO3\Flow\Annotations as Flow;
 /**
  * @api
  */
-class TimingHeaderViewhelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHelper {
+class TimingFooterViewhelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @var array
