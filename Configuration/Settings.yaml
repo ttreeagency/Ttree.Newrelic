@@ -2,6 +2,7 @@ NewRelic:
   transactionName:
     log: true
     send: true
+    userMonitoring: true
     template:
       Web: "{{UrlPath}}"
       Cli: "{{LastNameSpaceElementBeforeCommand}}:{{ControllerName}}:{{CommandName}}"

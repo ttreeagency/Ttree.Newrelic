@@ -122,12 +122,11 @@ class Connector {
 	 * @param string $transactionName
 	 */
 	private function handleTransactionName($transactionName) {
-        if($this->settings['transactionName']['log']) {
-            $this->systemLogger->log($transactionName);
-        }
-
-        if($this->settings['transactionName']['send'] && extension_loaded('newrelic') ) {
-            newrelic_name_transaction($transactionName);
-        }
+		if ($this->settings['transactionName']['log']) {
+			$this->systemLogger->log($transactionName);
+		}
+		if ($this->settings['transactionName']['send'] && extension_loaded('newrelic')) {
+			newrelic_name_transaction($transactionName);
+		}
     }
 }

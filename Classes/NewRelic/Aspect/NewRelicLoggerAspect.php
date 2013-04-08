@@ -2,7 +2,7 @@
 namespace NewRelic\Aspect;
 
 /*                                                                        *
- * This script belongs to the Flow framework.                            *
+ * This script belongs to the Flow framework.                             *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -10,7 +10,6 @@ namespace NewRelic\Aspect;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
 use TYPO3\Flow\Annotations as Flow;
 
 /**
@@ -19,41 +18,40 @@ use TYPO3\Flow\Annotations as Flow;
  * @Flow\Scope("singleton")
  * @Flow\Aspect
  */
-class NewRelicLoggerAspect
-{
+class NewRelicLoggerAspect {
 
-    /**
-     * @Flow\Inject
-     * @var \NewRelic\Connector
-     *
-     */
-    protected $connector;
+	/**
+	 * @Flow\Inject
+	 * @var \NewRelic\Connector
+	 *
+	 */
+	protected $connector;
 
-    /**
-     * @var  \TYPO3\Flow\Log\SystemLoggerInterface $systemLogger
-     */
-    protected $systemLogger;
+	/**
+	 * @var  \TYPO3\Flow\Log\SystemLoggerInterface $systemLogger
+	 */
+	protected $systemLogger;
 
-    /**
-     * @param \TYPO3\Flow\Log\SystemLoggerInterface $systemLogger
-     *
-     * @return void
-     */
-    public function injectSystemLogger(\TYPO3\Flow\Log\SystemLoggerInterface $systemLogger)
-    {
-        $this->systemLogger = $systemLogger;
-    }
+	/**
+	 * @param \TYPO3\Flow\Log\SystemLoggerInterface $systemLogger
+	 *
+	 * @return void
+	 */
+	public function injectSystemLogger(\TYPO3\Flow\Log\SystemLoggerInterface $systemLogger) {
+		$this->systemLogger = $systemLogger;
+	}
 
-    /**
-     * Logs the current request in newrelic
-     *
-     * @Flow\Around("method(ArnsboMedia.*Controller->processRequest())")
-     * @param \TYPO3\Flow\AOP\JoinPointInterface $joinPoint The current joinpoint
-     * @return mixed Result of the advice chain
-     */
-    public function logRequestInNewRelic(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
-        $request = $joinPoint->getMethodArgument('request');
-        $this->connector->logRequest($request);
-        return $joinPoint->getAdviceChain()->proceed($joinPoint);
-    }
+	/**
+	 * Logs the current request in newrelic
+	 *
+	 * @Flow\Around("method(Ttree.*Controller->processRequest())")
+	 * @param \TYPO3\Flow\AOP\JoinPointInterface $joinPoint The current joinpoint
+	 * @return mixed Result of the advice chain
+	 */
+	public function logRequestInNewRelic(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+		$request = $joinPoint->getMethodArgument('request');
+		$this->connector->logRequest($request);
+
+		return $joinPoint->getAdviceChain()->proceed($joinPoint);
+	}
 }
