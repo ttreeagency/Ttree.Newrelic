@@ -1,10 +1,11 @@
-NewRelic:
-  transactionName:
-    log: true
-    send: true
-    userMonitoring: true
-    template:
-      Web: "{{UrlPath}}"
-      Cli: "{{LastNameSpaceElementBeforeCommand}}:{{ControllerName}}:{{CommandName}}"
-  throwOnMissingExtension: false
-  logOnMissingExtension: true
+Ttree:
+  NewRelic:
+    transactionName:
+      log: true
+      send: true
+      userMonitoring: true
+      template:
+        Web: "{{UrlPath}}"
+        Cli: "{{LastNameSpaceElementBeforeCommand}}:{{ControllerName}}:{{CommandName}}"
+    throwOnMissingExtension: false
+    logOnMissingExtension: true

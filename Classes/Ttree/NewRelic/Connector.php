@@ -5,7 +5,7 @@ namespace Ttree\NewRelic;
 use TYPO3\Flow\Annotations as Flow;
 
 /**
- * An aspect which centralizes the logging of security relevant actions.
+ * NewRelic Service Connector
  *
  * @Flow\Scope("singleton")
  */
@@ -17,10 +17,7 @@ class Connector {
     protected $settings;
 
     /**
-     * Inject the settings
-     *
      * @param array $settings
-     *
      * @return void
      */
     public function injectSettings(array $settings) {
@@ -34,7 +31,6 @@ class Connector {
 
     /**
      * @param \TYPO3\Flow\Log\SystemLoggerInterface $systemLogger
-     *
      * @return void
      */
     public function injectSystemLogger(\TYPO3\Flow\Log\SystemLoggerInterface $systemLogger) {
