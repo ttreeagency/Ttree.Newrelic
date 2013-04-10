@@ -18,7 +18,7 @@ use TYPO3\Flow\Annotations as Flow;
  * @Flow\Scope("singleton")
  * @Flow\Aspect
  */
-class NewRelicLoggerAspect {
+class LoggerAspect {
 
 	/**
 	 * @Flow\Inject
