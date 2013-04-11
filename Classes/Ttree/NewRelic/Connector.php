@@ -22,6 +22,11 @@ class Connector {
     protected $systemLogger;
 
     /**
+     * @var array
+     */
+    protected $transactionCache = array();
+
+    /**
      * @param array $settings
      * @return void
      */
@@ -38,18 +43,23 @@ class Connector {
     }
 
     /**
+     * @param \Exception $exception
+     * @throws \Exception
+     */
+    public function logException(\Exception $exception) {
+        if ($this->isNewRelicExtensionIsLoaded() === TRUE) {
+            $this->systemLogger->log('Exception stacktrace send to New Relic');
+            newrelic_notice_error($exception->getCode() . ' - ' . $exception->getMessage(), $exception);
+        } else {
+            $this->systemLogger->log('Install New Relic Extension to save stacktrace');
+        }
+    }
+
+    /**
      * @param \TYPO3\Flow\MVC\RequestInterface $request
      * @throws \Exception
      */
     public function logRequest(\TYPO3\Flow\MVC\RequestInterface $request) {
-        if (!extension_loaded('newrelic')) {
-            if ($this->settings['logOnMissingExtension']) {
-                $this->systemLogger->log('newrelic extension missing - please install it', LOG_DEBUG, NULL, 'Ttree.NewRelic');
-            }
-            if ($this->settings['throwOnMissingExtension']) {
-                throw new \Exception('newrelic extension missing - install it', 1365444902);
-            }
-        }
         if ($request instanceof \TYPO3\Flow\Mvc\ActionRequest) {
             $this->logWebRequest($request);
         } elseif ($request instanceof \TYPO3\Flow\Cli\Request) {
@@ -101,12 +111,16 @@ class Connector {
      * @param string $transactionName
      */
     private function handleTransactionName($transactionName) {
+        if (!empty($this->transactionCache[$transactionName])) {
+            return;
+        }
+        if ($this->settings['transactionName']['send'] && $this->isNewRelicExtensionIsLoaded()) {
+            newrelic_name_transaction($transactionName);
+        }
         if ($this->settings['transactionName']['log']) {
             $this->systemLogger->log($transactionName);
         }
-        if ($this->settings['transactionName']['send'] && extension_loaded('newrelic')) {
-            newrelic_name_transaction($transactionName);
-        }
+        $this->transactionCache[$transactionName] = TRUE;
     }
 
     /**
@@ -125,5 +139,24 @@ class Connector {
         $transactionName = $this->formatTransactionName($this->getTransactionNameTemplate('Cli'), $values);
 
         $this->handleTransactionName($transactionName);
+    }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    private function isNewRelicExtensionIsLoaded() {
+        $loaded = TRUE;
+        if (!extension_loaded('newrelic')) {
+            if ($this->settings['logOnMissingExtension']) {
+                $this->systemLogger->log('newrelic extension missing - please install it', LOG_DEBUG, NULL, 'Ttree.NewRelic');
+            }
+            if ($this->settings['throwOnMissingExtension']) {
+                throw new \Exception('newrelic extension missing - install it', 1365444902);
+            }
+            $loaded = FALSE;
+        }
+
+        return $loaded;
     }
 }
