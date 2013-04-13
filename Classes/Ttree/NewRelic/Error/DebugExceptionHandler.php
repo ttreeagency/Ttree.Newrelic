@@ -12,7 +12,6 @@ namespace Ttree\NewRelic\Error;
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Exception;
 use TYPO3\Flow\Http\Response;
 
 /**
@@ -25,15 +24,13 @@ use TYPO3\Flow\Http\Response;
 class DebugExceptionHandler extends \TYPO3\Flow\Error\DebugExceptionHandler {
 
     /**
-     * @Flow\Inject
-     * @var \Ttree\NewRelic\Connector
+     * @param \Exception $exception
      */
-    protected $connector;
-
     public function handleException(\Exception $exception) {
-        $this->connector->logException($exception);
+        \Ttree\NewRelic\Connector::logException($exception);
 
         return parent::handleException($exception);
     }
+
 }
 ?>

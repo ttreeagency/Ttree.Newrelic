@@ -46,12 +46,9 @@ class Connector {
      * @param \Exception $exception
      * @throws \Exception
      */
-    public function logException(\Exception $exception) {
-        if ($this->isNewRelicExtensionIsLoaded() === TRUE) {
-            $this->systemLogger->log('Exception stacktrace send to New Relic');
+    public static function logException(\Exception $exception) {
+        if (extension_loaded('newrelic')) {
             newrelic_notice_error($exception->getCode() . ' - ' . $exception->getMessage(), $exception);
-        } else {
-            $this->systemLogger->log('Install New Relic Extension to save stacktrace');
         }
     }
 

@@ -14,6 +14,7 @@ namespace Ttree\NewRelic\Error;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Exception;
 use TYPO3\Flow\Http\Response;
+use TYPO3\Flow\Object\ObjectManager;
 
 /**
  * A basic but solid exception handler which catches everything which
@@ -25,15 +26,13 @@ use TYPO3\Flow\Http\Response;
 class ProductionExceptionHandler extends \TYPO3\Flow\Error\ProductionExceptionHandler {
 
     /**
-     * @Flow\Inject
-     * @var \Ttree\NewRelic\Connector
+     * @param \Exception $exception
      */
-    protected $connector;
-
     public function handleException(\Exception $exception) {
-        $this->connector->logException($exception);
-        
+        \Ttree\NewRelic\Connector::logException($exception);
+
         return parent::handleException($exception);
     }
+
 }
 ?>
