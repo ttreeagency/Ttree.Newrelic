@@ -1,5 +1,5 @@
 <?php
-namespace Ttree\NewRelic\Aspect;
+namespace Ttree\NewRelic\Error;
 
 /*                                                                        *
  * This script belongs to the Flow framework.                             *
@@ -10,33 +10,30 @@ namespace Ttree\NewRelic\Aspect;
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Exception;
+use TYPO3\Flow\Http\Response;
 
 /**
- * An aspect which centralizes the logging of security relevant actions.
+ * A basic but solid exception handler which catches everything which
+ * falls through the other exception handlers and provides useful debugging
+ * information.
  *
  * @Flow\Scope("singleton")
- * @Flow\Aspect
  */
-class LoggerAspect {
+class DebugExceptionHandler extends \TYPO3\Flow\Error\DebugExceptionHandler {
 
-	/**
-	 * @Flow\Inject
-	 * @var \Ttree\NewRelic\Connector
-	 */
-	protected $connector;
+    /**
+     * @Flow\Inject
+     * @var \Ttree\NewRelic\Connector
+     */
+    protected $connector;
 
-	/**
-	 * Logs the current request in newrelic
-	 *
-	 * @Flow\Around("method(TYPO3\Flow\Mvc\Controller\ActionController->processRequest())")
-	 * @param \TYPO3\Flow\AOP\JoinPointInterface $joinPoint The current joinpoint
-	 * @return mixed Result of the advice chain
-	 */
-	public function logRequest(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
-		$request = $joinPoint->getMethodArgument('request');
-		$this->connector->logRequest($request);
+    public function handleException(\Exception $exception) {
+        $this->connector->logException($exception);
 
-		return $joinPoint->getAdviceChain()->proceed($joinPoint);
-	}
+        return parent::handleException($exception);
+    }
 }
+?>
