@@ -146,7 +146,7 @@ class Connector {
         $loaded = TRUE;
         if (!extension_loaded('newrelic')) {
             if ($this->settings['logOnMissingExtension']) {
-                $this->systemLogger->log('newrelic extension missing - please install it', LOG_DEBUG, NULL, 'Ttree.NewRelic');
+                $this->systemLogger->log('newrelic extension missing - please install it', LOG_DEBUG, NULL, 'NewRelic');
             }
             if ($this->settings['throwOnMissingExtension']) {
                 throw new \Exception('newrelic extension missing - install it', 1365444902);
