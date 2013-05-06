@@ -1,5 +1,6 @@
 Ttree:
   NewRelic:
+    applicationName: FlowApplication
     transactionName:
       log: true
       send: true

@@ -42,6 +42,13 @@ class Connector {
         $this->systemLogger = $systemLogger;
     }
 
+	/**
+	 * @param string $applicationName
+	 */
+	public function setApplicationName($applicationName = NULL) {
+		newrelic_set_appname($applicationName ?: $this->settings['applicationName']);
+	}
+
     /**
      * @param \Exception $exception
      * @throws \Exception
