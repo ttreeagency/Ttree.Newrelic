@@ -46,7 +46,9 @@ class Connector {
 	 * @param string $applicationName
 	 */
 	public function setApplicationName($applicationName = NULL) {
-		newrelic_set_appname($applicationName ?: $this->settings['applicationName']);
+		if ($this->isNewRelicExtensionIsLoaded()) {
+			newrelic_set_appname($applicationName ?: $this->settings['applicationName']);
+		}
 	}
 
     /**
