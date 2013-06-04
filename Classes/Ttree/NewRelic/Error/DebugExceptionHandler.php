@@ -29,7 +29,7 @@ class DebugExceptionHandler extends \TYPO3\Flow\Error\DebugExceptionHandler {
     public function handleException(\Exception $exception) {
         \Ttree\NewRelic\Connector::logException($exception);
 
-        return parent::handleException($exception);
+        parent::handleException($exception);
     }
 
 }
