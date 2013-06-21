@@ -62,10 +62,10 @@ class Connector {
     }
 
     /**
-     * @param \TYPO3\Flow\MVC\RequestInterface $request
+     * @param \TYPO3\Flow\Mvc\RequestInterface $request
      * @throws \Exception
      */
-    public function logRequest(\TYPO3\Flow\MVC\RequestInterface $request) {
+    public function logRequest(\TYPO3\Flow\Mvc\RequestInterface $request) {
         if ($request instanceof \TYPO3\Flow\Mvc\ActionRequest) {
             $this->logWebRequest($request);
         } elseif ($request instanceof \TYPO3\Flow\Cli\Request) {

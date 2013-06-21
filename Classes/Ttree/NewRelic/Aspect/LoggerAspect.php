@@ -30,10 +30,10 @@ class LoggerAspect {
 	 * Logs the current request in newrelic
 	 *
 	 * @Flow\Around("method(TYPO3\Flow\Mvc\Controller\ActionController->processRequest())")
-	 * @param \TYPO3\Flow\AOP\JoinPointInterface $joinPoint The current joinpoint
+	 * @param \TYPO3\Flow\Aop\JoinPointInterface $joinPoint The current joinpoint
 	 * @return mixed Result of the advice chain
 	 */
-	public function logRequest(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+	public function logRequest(\TYPO3\Flow\Aop\JoinPointInterface $joinPoint) {
 		$request = $joinPoint->getMethodArgument('request');
 		$this->connector->logRequest($request);
 
