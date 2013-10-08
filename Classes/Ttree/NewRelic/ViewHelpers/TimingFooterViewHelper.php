@@ -11,11 +11,12 @@ namespace Ttree\NewRelic\ViewHelpers;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * @api
  */
-class TimingFooterViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHelper {
+class TimingFooterViewHelper extends AbstractViewHelper {
 
 	/**
 	 * @var array
@@ -35,7 +36,11 @@ class TimingFooterViewHelper extends \TYPO3\Fluid\Core\ViewHelper\AbstractViewHe
 	 */
 	public function render() {
 		if($this->settings['transactionName']['userMonitoring'] && extension_loaded('newrelic') ) {
-			return newrelic_get_browser_timing_footer();
+			$content = newrelic_get_browser_timing_footer();
+		} else {
+			$content = '<!-- Newrelic Transaction Tracking Footer disabled -->';
 		}
+
+		return $content;
 	}
 }
