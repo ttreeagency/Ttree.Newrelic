@@ -9,4 +9,4 @@ Ttree:
         Web: "{{UrlPath}}"
         Cli: "{{LastNameSpaceElementBeforeCommand}}:{{ControllerName}}:{{CommandName}}"
     throwOnMissingExtension: false
-    logOnMissingExtension: true
+    logOnMissingExtension: false
