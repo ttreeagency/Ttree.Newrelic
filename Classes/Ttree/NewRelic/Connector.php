@@ -71,7 +71,7 @@ class Connector {
         } elseif ($request instanceof \TYPO3\Flow\Cli\Request) {
             $this->logCliRequest($request);
         } else {
-            $this->systemLogger->log('Request of unknown type');
+            $this->systemLogger->log('Request of unknown type', LOG_ERR, NULL, 'Ttree.Newrelic');
         }
     }
 
@@ -121,10 +121,10 @@ class Connector {
             return;
         }
         if ($this->settings['transactionName']['send'] && $this->isNewRelicExtensionIsLoaded()) {
-            newrelic_name_transaction($transactionName);
+            newrelic_name_transaction($transactionName, LOG_DEBUG, NULL, 'Ttree.Newrelic');
         }
         if ($this->settings['transactionName']['log']) {
-            $this->systemLogger->log($transactionName);
+            $this->systemLogger->log($transactionName, LOG_DEBUG, NULL, 'Ttree.Newrelic');
         }
         $this->transactionCache[$transactionName] = TRUE;
     }
