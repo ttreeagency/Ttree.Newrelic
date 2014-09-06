@@ -71,7 +71,7 @@ class Connector {
         } elseif ($request instanceof \TYPO3\Flow\Cli\Request) {
             $this->logCliRequest($request);
         } else {
-            $this->systemLogger->log('Request of unknown type', LOG_ERR, NULL, 'Ttree.Newrelic');
+            $this->systemLogger->log('Request of unknown type', LOG_ERR);
         }
     }
 
@@ -121,10 +121,10 @@ class Connector {
             return;
         }
         if ($this->settings['transactionName']['send'] && $this->isNewRelicExtensionIsLoaded()) {
-            newrelic_name_transaction($transactionName, LOG_DEBUG, NULL, 'Ttree.Newrelic');
+            newrelic_name_transaction($transactionName, LOG_DEBUG);
         }
         if ($this->settings['transactionName']['log']) {
-            $this->systemLogger->log($transactionName, LOG_DEBUG, NULL, 'Ttree.Newrelic');
+            $this->systemLogger->log($transactionName, LOG_DEBUG);
         }
         $this->transactionCache[$transactionName] = TRUE;
     }
@@ -155,7 +155,7 @@ class Connector {
         $loaded = TRUE;
         if (!extension_loaded('newrelic')) {
             if ($this->settings['logOnMissingExtension']) {
-                $this->systemLogger->log('newrelic extension missing - please install it', LOG_DEBUG, NULL, 'NewRelic');
+                $this->systemLogger->log('newrelic extension missing - please install it', LOG_DEBUG);
             }
             if ($this->settings['throwOnMissingExtension']) {
                 throw new \Exception('newrelic extension missing - install it', 1365444902);
